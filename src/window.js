@@ -25,6 +25,18 @@ export { default as localStorage } from './localStorage'
 export { default as location } from './location'
 export { btoa, atob } from './Base64.js'
 export * from './WindowProperties'
+export { default as document } from './document'
+
+const addEventListener = (type, listener) => {
+    document.addEventListener(type, listener)
+}
+const removeEventListener = (type, listener) => {
+    document.removeEventListener(type, listener)
+}
+const dispatchEvent = function(event = {}) {
+    console.log('window.dispatchEvent', event.type, event);
+    // nothing to do
+}
 
 const { platform } = wx.getSystemInfoSync()
 
@@ -66,10 +78,11 @@ function focus() {}
 function blur() {}
 
 if (platform !== 'devtools') {
-    const wxPerf = wx.getPerformance();
+    const offset = Date.now();
+    const performance = wx.getPerformance ? wx.getPerformance() : { now: () => (Date.now() - offset) * 1000 };
     const consoleTimers = {};
     console.time = function(name) {
-        consoleTimers[name] = wxPerf.now();
+        consoleTimers[name] = performance.now();
     };
 
     console.timeEnd = function(name) {
@@ -78,7 +91,7 @@ if (platform !== 'devtools') {
             return;
         }
 
-        const timeElapsed = wxPerf.now() - timeStart;
+        const timeElapsed = performance.now() - timeStart;
         console.log(name + ": " + timeElapsed / 1000 + "ms");
         delete consoleTimers[name];
     };
@@ -97,7 +110,9 @@ function eventHandlerFactory() {
     }
 }
 
-wx.onWindowResize(eventHandlerFactory())
+if (wx.onWindowResize) {
+  wx.onWindowResize(eventHandlerFactory())
+}
 
 const _setTimeout = setTimeout;
 const _clearTimeout = clearTimeout;
@@ -120,5 +135,10 @@ export {
     _setInterval as setInterval,
     _clearInterval as clearInterval,
     _requestAnimationFrame as requestAnimationFrame,
-    _cancelAnimationFrame as cancelAnimationFrame
+    _cancelAnimationFrame as cancelAnimationFrame,
+
+    addEventListener,
+    removeEventListener,
+    dispatchEvent,
+    wx
 }

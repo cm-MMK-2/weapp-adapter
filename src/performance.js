@@ -1,4 +1,4 @@
-let performance
+let performance = {}
 
 if (wx.getPerformance) {
   const { platform } = wx.getSystemInfoSync()
@@ -12,6 +12,14 @@ if (wx.getPerformance) {
   })
 
   performance = platform === 'devtools' ? wxPerf : clientPerfAdapter
+} else {
+  const initTime = Date.now()
+
+  Object.assign(performance, {
+    now: function() {
+      return Date.now() - initTime
+    }
+  })
 }
 
 export default performance
