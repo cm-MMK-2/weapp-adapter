@@ -5,27 +5,90 @@ import getImageComputedStyle from './style/ImageComputedStyle'
 import getCanvasComputedStyle from './style/CanvasComputedStyle'
 import Event from './Event'
 
-export { default as navigator } from './navigator'
-export { default as XMLHttpRequest } from './XMLHttpRequest'
-export { default as WebSocket } from './WebSocket'
-export { default as Worker } from './Worker'
-export { default as Image } from './Image'
-export { default as ImageBitmap } from './ImageBitmap'
-export { default as Audio } from './Audio'
-export { default as FileReader } from './FileReader'
-export { default as HTMLElement } from './HTMLElement'
-export { default as HTMLImageElement } from './HTMLImageElement'
-export { default as HTMLCanvasElement } from './HTMLCanvasElement'
-export { default as HTMLMediaElement } from './HTMLMediaElement'
-export { default as HTMLAudioElement } from './HTMLAudioElement'
-export { default as HTMLVideoElement } from './HTMLVideoElement'
-export { default as WebGLRenderingContext } from './WebGLRenderingContext'
-export { TouchEvent, PointerEvent, MouseEvent } from './EventIniter/index.js'
-export { default as localStorage } from './localStorage'
-export { default as location } from './location'
-export { btoa, atob } from './Base64.js'
+export {
+    default as navigator
+}
+from './navigator'
+export {
+    default as XMLHttpRequest
+}
+from './XMLHttpRequest'
+export {
+    default as WebSocket
+}
+from './WebSocket'
+export {
+    default as Worker
+}
+from './Worker'
+export {
+    default as Image
+}
+from './Image'
+export {
+    default as ImageBitmap
+}
+from './ImageBitmap'
+export {
+    default as Audio
+}
+from './Audio'
+export {
+    default as FileReader
+}
+from './FileReader'
+export {
+    default as HTMLElement
+}
+from './HTMLElement'
+export {
+    default as HTMLImageElement
+}
+from './HTMLImageElement'
+export {
+    default as HTMLCanvasElement
+}
+from './HTMLCanvasElement'
+export {
+    default as HTMLMediaElement
+}
+from './HTMLMediaElement'
+export {
+    default as HTMLAudioElement
+}
+from './HTMLAudioElement'
+export {
+    default as HTMLVideoElement
+}
+from './HTMLVideoElement'
+export {
+    default as WebGLRenderingContext
+}
+from './WebGLRenderingContext'
+export {
+    TouchEvent,
+    PointerEvent,
+    MouseEvent
+}
+from './EventIniter/index.js'
+export {
+    default as localStorage
+}
+from './localStorage'
+export {
+    default as location
+}
+from './location'
+export {
+    btoa,
+    atob
+}
+from './Base64.js'
 export * from './WindowProperties'
-export { default as document } from './document'
+export {
+    default as document
+}
+from './document'
 
 const addEventListener = (type, listener) => {
     document.addEventListener(type, listener)
@@ -38,7 +101,9 @@ const dispatchEvent = function(event = {}) {
     // nothing to do
 }
 
-const { platform } = wx.getSystemInfoSync()
+const {
+    platform
+} = wx.getSystemInfoSync()
 
 // 暴露全局的 canvas
 GameGlobal.screencanvas = GameGlobal.screencanvas || new Canvas()
@@ -79,7 +144,9 @@ function blur() {}
 
 if (platform !== 'devtools') {
     const offset = Date.now();
-    const performance = wx.getPerformance ? wx.getPerformance() : { now: () => (Date.now() - offset) * 1000 };
+    const performance = wx.getPerformance ? wx.getPerformance() : {
+        now: () => (Date.now() - offset) * 1000
+    };
     const consoleTimers = {};
     console.time = function(name) {
         consoleTimers[name] = performance.now();
@@ -87,7 +154,7 @@ if (platform !== 'devtools') {
 
     console.timeEnd = function(name) {
         const timeStart = consoleTimers[name];
-        if(!timeStart) {
+        if (!timeStart) {
             return;
         }
 
@@ -110,8 +177,8 @@ function eventHandlerFactory() {
     }
 }
 
-if (wx.onWindowResize) {
-  wx.onWindowResize(eventHandlerFactory())
+if (wx && wx.onWindowResize) {
+    wx.onWindowResize(eventHandlerFactory())
 }
 
 const _setTimeout = setTimeout;
@@ -140,5 +207,4 @@ export {
     addEventListener,
     removeEventListener,
     dispatchEvent,
-    wx
 }
